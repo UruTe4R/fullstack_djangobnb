@@ -1,0 +1,219 @@
+/* parent */
+.navbar {
+  background-color: white;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+
+  padding: 0.5rem 0;
+  border-bottom: 1px solid lightgray;
+
+  z-index: 10;
+}
+/* child */
+.nav_container {
+  background-color: white;
+  max-width: 1500px;
+  height: 6rem;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 0 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* g child 1 */
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+}
+.responsiveImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* g child 2 search filter */
+.searchfilter_container {
+  display: flex;
+  padding: 0 0.2rem;
+}
+.searchfilter{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  border: 1px solid gray;
+  border-radius: 50px;
+}
+/* g g child 1 location */
+.location {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.where {
+  width: 250px;
+  height: 64px;
+  padding: 0 2rem;
+
+  display: flex;
+  border-radius: 50px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+
+}
+.where_small {
+  width: 150px;
+  height: 64px;
+  padding: 0 2rem;
+
+  display: flex;
+  border-radius: 50px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+
+}
+.where:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+.where_small:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+.small_text {
+  font-size: 14px;
+  color: gray;
+}
+.middle_text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.p_2 {
+  padding: 0.5rem;
+}
+.p_4 {
+  padding: 0.5rem;
+  background-color: var(--airbnb);
+  border-radius: 50px;
+  color: white;
+}
+.p_4:hover {
+  background-color: var(--airbnbDark);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.desktop {
+  display: none;
+  
+}
+@media (max-width: 975px) {
+  .searchfilter {
+    height: 48px;
+  }
+}
+
+@media (min-width: 975px) {
+  .desktop {
+    display: block;
+  }
+  .p_4 {
+    padding: 1rem;
+  }
+}
+
+/* g g child 2 input */
+.input {
+  flex: 1;
+  border-radius: 20px;
+  padding: 1rem;
+}
+
+/* g child 3 */
+.usermenu_container {
+  display: flex;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.usermenu {
+  position: relative;
+  display: inline-block;
+  border-radius: 50px;
+  border: 1px solid lightgray;
+  cursor: pointer;
+}
+
+
+
+.usermenu_button {
+  padding: 0.5rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+}
+.usermenu_button:active {
+  background-color: lightgray;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+}
+
+/* add property button */
+.addpropertybutton {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: 50px;
+  border: 1px solid transparent;
+  
+}
+.addpropertybutton:hover {
+  background-color: lightgray;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* popup */
+.popup {
+  width: 220px;
+  position: absolute;
+  top: 60px;
+  right: 0px;
+  border: 1px solid lightgray;
+  background-color: white;
+  border-radius: 7px;
+  box-shadow: 2px 2px 5px lightgray;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* MenuLink */
+.menuLink {
+  padding: 1rem 1.25rem;
+  transition: background-color 0.2s ease-in-out;
+}
+.menuLink:hover {
+  background-color: rgb(241, 241, 241);
+}

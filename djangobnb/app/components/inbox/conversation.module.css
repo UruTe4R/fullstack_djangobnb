@@ -1,0 +1,82 @@
+/* for Convarsation component */
+.container {
+  padding: 1rem 1.5rem;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.personName {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.bnbtext {
+  color: var(--airbnb);
+}
+
+/* for ConversationDetail component*/
+.conversationDetail {
+  max-height: 400px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+}
+.conversationDetail > * + * {
+  margin-top: 1rem;
+}
+
+.message {
+  width: 80%;
+  padding: 1rem 1.5rem;
+  border-radius: 7px;
+  background-color: lightgray;
+}
+  .owner {
+    background-color: skyblue;
+    margin-left: 20%;
+  }
+
+.messageName {
+  font-weight: bold;
+  color: gray;
+}
+
+.containerContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.formContainer {
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  display: flex;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+  transition: width 0.2s ease-in-out;
+}
+@media(min-width: 1000px) {
+  .formContainer {
+    width: 80%;
+  }
+}
+@media(max-width: 1000px) {
+  .formContainer {
+    width: 100%;
+  }
+}
+.formContainer > * + * {
+  margin-left: 1rem;
+}
+.input {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.5rem;
+  background-color: rgb(233, 233, 233);
+  border-radius: 7px;
+  overflow: wrap;
+}
+.button {
+  width: 100px;
+}

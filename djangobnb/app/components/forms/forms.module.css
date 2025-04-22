@@ -1,0 +1,16 @@
+/* CustomButton */
+.customButton {
+  width: 100%;
+  padding: 1rem 0;
+  background-color: var(--airbnb);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.customButton:hover {
+  background-color: var(--airbnbDark);
+  transition: background-color 0.2s ease-in-out;
+}

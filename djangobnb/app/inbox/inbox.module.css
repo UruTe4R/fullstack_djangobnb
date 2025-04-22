@@ -1,0 +1,14 @@
+.main {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 2rem 0.75rem;
+}
+
+.main > * + * {
+  margin-top: 1rem;
+}
+
+.h1 {
+  margin: 1.5rem 0;
+  font-size: 1.25rem;
+}

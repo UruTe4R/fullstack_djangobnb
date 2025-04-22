@@ -1,0 +1,79 @@
+.main {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 2rem 0.75rem;
+}
+
+
+.h1 {
+  margin: 1.5rem 0;
+  font-size: 1.25rem;
+}
+
+.propertyContainer > * + * {
+  margin-top: 1rem;
+}
+
+.property {
+  padding: 1.25rem;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  box-shadow: 1px 2px 3px lightgray;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+}
+
+
+
+.span1 {
+  grid-column: span 1;
+}
+
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 /1;
+  border-radius: 7px;
+}
+
+.image:hover {
+  transform: scale(1.1);
+  object-fit: cover;
+  transition: transform 0.2s ease-in-out;
+  width: 100;
+  height: auto;
+}
+
+.reservationInfoContainer {
+  grid-column: span 3;
+
+}
+@media (max-width: 650px) {
+  .property {
+    grid-template-columns: 1fr;
+  }
+
+  .reservationInfoContainer {
+    grid-column: span 1;
+  }
+
+}
+.reservationInfo {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.p {
+  margin-bottom: 0.5rem;
+}
+
+.button {
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+  background-color: var(--airbnb);
+  color: white;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  display: inline-block;
+}

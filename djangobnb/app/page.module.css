@@ -1,0 +1,39 @@
+/* colors */
+.airbnb {
+  color: #ff385c;
+}
+
+.airbnbDark {
+  color: #d50027;
+}
+
+.categoriesContainer {
+  background-color: white;
+  max-width: 1500px;
+  height: 6rem;
+
+  margin: 0 auto;
+
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.propertylistContainer {
+  background-color: white;
+  max-width: 1500px;
+
+  margin: 0 auto;
+  margin-top: 0.5rem;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1rem;
+}
+@media (max-width: 975px) {
+  .propertylistContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

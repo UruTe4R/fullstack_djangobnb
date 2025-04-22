@@ -1,0 +1,115 @@
+.propertyList {
+  cursor: pointer;
+}
+
+.item {
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  border-radius: 15px;
+
+  position: relative;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.image:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.mt_2 {
+  margin-top: 0.25rem;
+}
+
+.text {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.text_sm {
+  font-size: 0.6rem;
+  color: gray;
+}
+
+/* reservation side bar */
+.resAside {
+  margin-top: 1rem;
+  padding: 1rem;
+  grid-column: span 1;
+  border-radius: 15px;
+  border: 1px solid lightgray;
+  box-shadow: -0.5px 1px 3px lightgray;
+}
+
+@media(min-width: 768px) {
+  .resAside {
+    grid-column: span 2;
+  }
+}
+
+  .price {
+    margin-bottom: 0.885rem;
+    font-size: 1.35rem;
+  }
+
+  .calenderContainer {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    border: 1px solid lightgray;
+    border-radius: 7px;
+  }
+
+  .label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.7rem;
+    color: rgb(71, 71, 71);
+    margin-bottom: 0.25rem;
+  }
+
+  .select {
+    width: 100%;
+    margin-left: -0.2rem;
+    font-size: 1rem;
+  }
+
+  .button {
+    text-align: center;
+    width: 100;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 0;
+    color: white;
+    background-color: var(--airbnb);
+    border-radius: 5px;
+  }
+  .button:hover {
+    cursor: pointer;
+    background-color: var(--airbnbDark);
+  }
+
+  .total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    margin-bottom: 0.5rem;
+  }
+
+  .feeSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 0.5rem;
+  }
+
+  .sum {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-weight: bold;
+  }
