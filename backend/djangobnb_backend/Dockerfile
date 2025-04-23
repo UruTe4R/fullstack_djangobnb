@@ -23,6 +23,8 @@ COPY ./entrypoint.sh .
 RUN sed -i 's/\r$//g' /usr/src/djangobnb_backend/entrypoint.sh
 RUN chmod +x /usr/src/djangobnb_backend/entrypoint.sh
 
+EXPOSE 8000
+
 COPY . .
 
 ENTRYPOINT [ "/usr/src/djangobnb_backend/entrypoint.sh" ]
