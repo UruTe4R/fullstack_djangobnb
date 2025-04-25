@@ -2,17 +2,20 @@ import styles from './forms.module.css';
 
 interface CustomButtonProps {
   label: string;
-  style?: object;
-  onClick: () => void;
+  type?: "button" | "submit" | "reset";
+  style?: React.CSSProperties;
+  onClick?: () => void;
 }
 
-export default function CustomButton({ label, onClick, style }: CustomButtonProps) {
+export default function CustomButton({ label, onClick, style, type = "button" }: CustomButtonProps) {
   return (
-    <div 
-    className={styles.customButton}
-    onClick={onClick}
-    style={style}>
+    <button
+      type={type}
+      className={styles.customButton}
+      onClick={onClick}
+      style={style}
+    >
       {label}
-    </div>
-  )
+    </button>
+  );
 }
