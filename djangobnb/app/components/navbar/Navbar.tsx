@@ -5,8 +5,10 @@ import Image from 'next/image';
 import SearchFilters from '@/app/components/navbar/SearchFilters';
 import UserNav from './UserNav';
 import AddPropertyButton from '@/app/components/navbar/AddPropertyButton';
+import { getUserId } from '@/app/lib/actions';
 
-export default function Navbar() {
+export default async function Navbar() {
+  const userId = await getUserId();
   return (
     <nav className={styles.navbar}>
       <div className={styles.nav_container}>
@@ -24,7 +26,9 @@ export default function Navbar() {
           </div>
           <div className={styles.usermenu_container}>
             <AddPropertyButton />
-            <UserNav />
+            <UserNav 
+              userId={userId}
+            />
           </div>
       </div>
     </nav>

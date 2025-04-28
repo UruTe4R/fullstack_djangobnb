@@ -26,3 +26,18 @@ export async function handleLogin(userId: string, accessToken: string, refreshTo
     path: '/'
   })
 }
+
+export async function resetAuthCookie() {
+  const cookieStore = await cookies()
+
+  cookieStore.delete('session_userid');
+  cookieStore.delete('session_access_token');
+  cookieStore.delete('session_refresh_token');
+}
+
+export async function getUserId() {
+  const cookieStore = await cookies()
+  const userId = cookieStore.get('session_userid')?.value
+
+  return userId ? userId : null
+}

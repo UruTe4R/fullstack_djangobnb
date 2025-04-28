@@ -25,7 +25,7 @@ const apiService = {
   },
 
   post: async function (url: string, data: any): Promise<any> {
-    console.log('post', url, data);
+    console.log('post', url);
 
     return fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
       method: 'POST',
@@ -39,7 +39,6 @@ const apiService = {
       return response.json()
     })
     .then(json => {
-      console.log('Response:', json);
       return json;
     })
     .catch(error => {

@@ -6,8 +6,15 @@ import styles from '@/app/components/navbar/navbar.module.css';
 import MenuLink from '@/app/components/navbar/MenuLink';
 import useLoginModal from '@/app/hooks/useLoginModal';
 import useSignupModal from '@/app/hooks/useSignupModal';
+import LogoutButton from '@/app/components/LogoutButton';
 
-export default function UserNav() {
+
+interface UserNavProps {
+  userId?: string | null;
+}
+
+export default function UserNav({ userId }: UserNavProps) {
+
   const open = useLoginModal((state) => state.open);
   const openSignup = useSignupModal((state) => state.open);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -59,14 +66,23 @@ export default function UserNav() {
             e.stopPropagation();
           }}
         >
-          <MenuLink 
-            label="Log in"
-            onClick={handleClickLogin}
-          />
-          <MenuLink 
-            label="Sign up"
-            onClick={handleClickSigup}
-          />
+          {userId ? (
+            <LogoutButton />
+          ): (
+            <>
+              <MenuLink 
+                label="Log in"
+                onClick={handleClickLogin}
+              />
+              <MenuLink 
+                label="Sign up"
+                onClick={handleClickSigup}
+              />
+            </>
+          )}
+          
+
+          
         </div>
       )}
     </div>
