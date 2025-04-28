@@ -9,6 +9,7 @@ import Modal from './Modal';
 import useSignupModal from '@/app/hooks/useSignupModal';
 import CustomButton from '@/app/components/forms/CustomButton';
 import apiService from '@/app/services/apiService';
+import { handleLogin } from '@/app/lib/actions';
 
 export default function SignupModal() {
   const isOpen = useSignupModal((state) => state.isOpen);
@@ -35,7 +36,17 @@ export default function SignupModal() {
 
     const response = await apiService.post('/api/auth/register/', formData);
 
-    if (response?.access) {
+    if (response.access) {
+      // handle login
+      try 
+      {
+        await handleLogin(response.user.pk, response.access, response.refresh)
+      }
+
+      catch (error) {
+        console.log(error)
+      }
+
       close();
       router.push('/');
     } else {
