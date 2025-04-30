@@ -25,7 +25,9 @@ export default async function Navbar() {
             <SearchFilters />
           </div>
           <div className={styles.usermenu_container}>
-            <AddPropertyButton />
+            <AddPropertyButton 
+              userId={userId}
+            />
             <UserNav 
               userId={userId}
             />

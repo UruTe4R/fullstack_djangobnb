@@ -118,3 +118,62 @@
   border-radius: 7px;
   opacity: 0.8;
 }
+
+/* AddPropertyModal */
+
+.previousButton {
+  margin-bottom: 0.5rem;
+  background-color: black !important;
+}
+.previousButton:hover {
+  background-color: gray !important;
+}
+
+.formContainer {
+  padding-top: 0.75rem;
+  padding-bottom: 1.5rem;
+
+}
+.formContainer > * + * {
+  margin-top: 1rem;
+}
+
+.formHeader {
+  display: flex;
+  flex-direction: column;
+}
+.formHeader > * + * {
+  margin-top: 0.5rem;
+}
+
+.titleInput {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+}
+
+.descriptionInput {
+  width: 100%;
+  height: 200px;
+  padding: 1rem;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+}
+.imageSection {
+  padding: 1rem 1.5rem;
+  background-color: gray;
+  color: white;
+  border-radius: 7px;
+}
+.imageContainer {
+  width: 200px;
+  height: 150px;
+  position: relative;
+}
+.image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 7px;
+}
