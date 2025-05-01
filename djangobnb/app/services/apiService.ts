@@ -1,3 +1,5 @@
+import { getAccessToken } from '@/app/lib/actions';
+
 const apiService = {
   get: async function (url: string): Promise<any> {
     console.log('get', url);
@@ -43,6 +45,35 @@ const apiService = {
     })
     .catch(error => {
       console.log("Error:", error);
+      throw error;
+    })
+  },
+
+  postWithCredentials: async function (url: string, data: any): Promise<any> {
+    console.log('postWithCredentials', url);
+
+    const accessToken = await getAccessToken();
+    console.log('accessToken', accessToken);
+
+    const isFormData = data instanceof FormData;
+
+    return fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        ...(isFormData ? {} : {'Content-Type': 'application/json'}),
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: data,
+    })
+    .then(response => {
+      return response.json()
+    })
+    .then(json => {
+      return json;
+    })
+    .catch(error => {
+      console.log("Error:", error.errors);
       throw error;
     })
   },

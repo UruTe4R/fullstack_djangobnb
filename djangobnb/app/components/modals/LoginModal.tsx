@@ -48,7 +48,7 @@ export default function LoginModal() {
 
         <input onChange={(e) => handleChange('password', e.target.value)} value={formData.password} type="password" className={styles.input} placeholder="Your password"/>
 
-        {errors.map((error, i) => {
+        {errors?.map((error, i) => {
           return (
             <div className={styles.error} key={i}>
               {error}

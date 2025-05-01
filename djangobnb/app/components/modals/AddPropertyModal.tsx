@@ -68,27 +68,30 @@ export default function AddPropertyModal() {
       const value = formData[key as keyof typeof formData];
       if (value) {
         if (key === 'country') {
-          for (const k in value as SelectCountryValue) {
-            const v = value[k as keyof typeof value];
-            form.append(k, v);
-          }
+          const country = value as SelectCountryValue;
+
+          form.append('country', country.label);
+          form.append('country_code', country.value)
         } else if (key === 'image') {
           form.append(key, value as File); // skip if null already handled
-        } else {
+        } else if (key === 'price') {
+          form.append('price_per_night', value as string);
+        }  else {
           form.append(key, value as string);
         }
       }
     }
-    const response = await apiService.post('api/properties/create/', form);
+    const response = await apiService.postWithCredentials('/api/properties/create/', form);
 
     if (response.success) {
       console.log('SUCCESS:-D')
 
       router.push('/');
+      router.refresh();
 
       close();
     } else {
-      console.log('ERROR')
+      console.log('ERROR', response)
     }
   }
 
@@ -249,7 +252,7 @@ export default function AddPropertyModal() {
           <CustomButton 
             label='Submit'
             type='submit'
-            onClick={() => console.log('submit')}
+            onClick={submitForm}
           />
         </>
       )}

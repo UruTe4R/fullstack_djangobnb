@@ -1,6 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import { ValueContainer } from 'react-select/animated';
 
 export async function handleLogin(userId: string, accessToken: string, refreshToken: string) {
   const cookieStore = await cookies()
@@ -40,4 +41,11 @@ export async function getUserId() {
   const userId = cookieStore.get('session_userid')?.value
 
   return userId ? userId : null
+}
+
+export async function getAccessToken() {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get('session_access_token')?.value;
+
+  return accessToken ? accessToken : null
 }
