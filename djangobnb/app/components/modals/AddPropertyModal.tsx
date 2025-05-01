@@ -39,6 +39,8 @@ export default function AddPropertyModal() {
     image: null as File | null,
   });
   
+  const [errors, setErrors] = useState<string[]>([]);
+  
 
   // modal control
   const isOpen = usePropertyModal((state) => state.isOpen);
@@ -85,13 +87,21 @@ export default function AddPropertyModal() {
 
     if (response.success) {
       console.log('SUCCESS:-D')
-
       router.push('/');
+      // 作成した後にちゃんとページに反映されるかどうかを見る。
       router.refresh();
 
       close();
     } else {
       console.log('ERROR', response)
+      console.log('ERROR', response.errors)
+      console.log('Error.length', Object.keys(response.errors).length)
+
+      const tmpErrors: string[] = Object.keys(response.errors).map((field: any) => {
+        return `${field} is missing`;
+      })
+      console.log('tmpErrors', tmpErrors)
+      setErrors(tmpErrors);
     }
   }
 
@@ -242,6 +252,19 @@ export default function AddPropertyModal() {
               </div>
             )}
 
+          </div>
+          <div className={styles.errorContainer}>
+
+            {errors && errors.map((error, index) => {
+              return (
+                <div
+                key={index}
+                className={styles.error2}
+                >
+                  {error}
+                </div>
+              )
+            })}
           </div>
 
           <CustomButton 

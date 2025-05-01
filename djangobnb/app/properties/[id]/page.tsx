@@ -2,14 +2,19 @@ import styles from './propertyPage.module.css';
 import Image from 'next/image';
 
 import ReservationSidebar from '@/app/components/properties/ReservationSidebar';
+import apiService from '@/app/services/apiService';
+import { parseAppSegmentConfig } from 'next/dist/build/segment-config/app/app-segment-config';
 
-export default async function PropertyDetailPage() {
+export default async function PropertyDetailPage({ params }: {params: {id: string}}) {
+  const { id } = await params
+  const property = await apiService.get(`/api/properties/${id}`)
+  const landlord = property.landlord
   return (
     <main className={styles.main}>
       <div className={styles.imageContainer}>
         <Image
           fill 
-          src="/images/beach_1.jpg"
+          src={property.image_url}
           className={styles.image}
           alt="Beach house"
         />
@@ -17,26 +22,38 @@ export default async function PropertyDetailPage() {
 
       <div className={styles.infosGrid}>
         <div className={styles.propertyInfo}>
-          <h1 className={styles.title}>Property Name</h1>
-          <span className={styles.guests}>4 guests - 2 bedrooms - 1 bathroom</span>
+          <h1 className={styles.title}>{property.title}</h1>
+          <span className={styles.guests}>{property.guests} guests - {property.guests} bedrooms - {property.bathrooms} bathroom</span>
           <hr />
           <div className={styles.landlordContainer}>
-            <Image 
+            {landlord.avatar_url ? (
+              <Image 
+              src={landlord.avatar_url}
+              alt="Profile Picture"
+              width={50}
+              height={50}
+              className={styles.profileImage}/>
+            ) : (
+              <Image 
               src="/images/profile_pic_1.jpg"
               alt="Profile Picture"
               width={50}
               height={50}
               className={styles.profileImage}/>
+            )}
             
-            <p><strong>John Doe</strong> is your host</p>
+            
+            <p><strong>{landlord.name ?? 'anonymous'}</strong> is your host</p>
           </div>
 
           <hr />
 
-          <div className={styles.description}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque veritatis quo non quaerat. Cumque, nobis vitae! Dolorem et distinctio veniam sint ratione placeat nemo aspernatur, amet libero. Possimus, error aliquam?</div>
+          <div className={styles.description}>{property.description}</div>
         </div>
 
-        <ReservationSidebar />
+        <ReservationSidebar 
+          property={property}
+        />
         
       </div>
     </main>

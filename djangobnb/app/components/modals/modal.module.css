@@ -177,3 +177,15 @@
   object-fit: cover;
   border-radius: 7px;
 }
+
+.errorContainer {
+  height: 200px;
+  overflow: auto;
+}
+.error2 {
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  background-color: var(--airbnb);
+  border-radius: 7px;
+  opacity: 0.8;
+}

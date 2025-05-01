@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import apiService from "@/app/services/apiService";
 
 import PropertyListItem from "@/app/components/properties/PropertyListItem";
-import { setDefaultAutoSelectFamilyAttemptTimeout } from "net";
+import Link from 'next/link';
 
 export type PropertyType = {
   id: string; 
@@ -26,9 +26,12 @@ export default function PropertyList() {
     <>
       {properties.map((property) => {
         return (
-          <PropertyListItem 
-            key={property.id}
-            property={property}/>
+          <Link key={property.id} href={`/properties/${property.id}`}>  
+            <PropertyListItem 
+              key={property.id}
+              property={property}
+            />
+          </Link>
         )
       })}
       

@@ -17,3 +17,12 @@ class CustomRegisterSerializer(RegisterSerializer):
         # super().save() は内部で User インスタンスを作るので利用
         user = super().save(request)
         return user
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    avatar_url = serializers.SerializerMethodField()
+    class Meta:
+        model = User
+        fields = ['id', 'name', 'avatar_url']
+
+    def get_avatar_url(self, obj):
+        return obj.avatar_url()
