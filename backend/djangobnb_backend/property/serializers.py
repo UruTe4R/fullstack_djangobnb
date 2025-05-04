@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Property
+from .models import Property, Reservation
 from useraccount.serializers import UserDetailSerializer
 
 class PropertiesListSerializer(serializers.ModelSerializer):
@@ -30,3 +30,8 @@ class PropertiesDetailSerializer(serializers.ModelSerializer):
       'category',
       'image_url',
     ]
+
+class ReservationSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Reservation
+    fields = ['property_obj', 'checkin_date', 'checkout_date', 'guests', 'booked_by']

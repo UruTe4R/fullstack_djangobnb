@@ -116,6 +116,7 @@ INSTALLED_APPS = [
     # apps
     'useraccount',
     'property',
+    'platform_settings',
 ]
 
 MIDDLEWARE = [

@@ -2,8 +2,18 @@
 
 import styles from './properties.module.css';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { DateRangePicker } from 'react-date-range';
+import {differenceInDays, eachDayOfInterval } from 'date-fns';
 
+import apiService from '@/app/services/apiService';
+import useLoginModal from '@/app/hooks/useLoginModal';
+
+const initialDateRange = {
+  startDate: new Date(),
+  endDate: new Date(),
+  key: 'selection',
+}
 
 // types
 export type Property = {
@@ -23,6 +33,7 @@ export type Property = {
 }
 
 interface ReservationSidebarProps {
+  userId: string | null;
   property: Property;
 }
 
@@ -30,24 +41,44 @@ interface ReservationSidebarProps {
 
 
 export default function ReservationSidebar({ property }: ReservationSidebarProps) {
-  const [ nights, setNights ] = useState(1);
-  const maxGuests = property.guests
+  const LoginModal = useLoginModal();
+
+  const [ fee, setFee ] = useState<number>(0);
+  const [ nights, setNights ] = useState<number>(1);
+  const [ totalPrice, setTotalPrice ] = useState<number>(0);
+  const [ dateRange, setDateRange ] = useState(initialDateRange);
+  const [ minDate, setMinDate ] = useState<Date>(new Date());
+  const [ guests, setGuests ] = useState<number>(1);
+  const guestsRange = Array.from({length: property.guests}, (_, i) => (i + 1))
+  // effect
+  useEffect(() => {
+    if (dateRange.startDate && dateRange.endDate) {
+      const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
+
+      if (dayCount && property.price_per_night) {
+        const _fee = dayCount * property.price_per_night;
+      }
+    }
+  }, [dateRange])
+
   return (
     <aside className={styles.resAside}>
       <h2 className={styles.price}>${property.price_per_night} per night</h2>
 
       <div className={styles.calenderContainer}>
-        <label className={styles.label}>Nights</label>
+        <label className={styles.label}>Guests</label>
 
         <select 
           className={styles.select}
-          value={nights}
-          onChange={e => setNights(Number(e.target.value))}
+          value={guests}
+          onChange={e => setGuests(Number(e.target.value))}
+          disabled={guestsRange.length === 1}
         >
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
+          {guestsRange.map((n) => {
+            return (
+              <option key={n} value={n}>{n}</option>
+            )
+          }) }
         </select>
       </div>
 
@@ -60,14 +91,14 @@ export default function ReservationSidebar({ property }: ReservationSidebarProps
 
       <div className={styles.feeSection}>
         <p>Djangobnb fee</p>
-        <p>$40</p>
+        <p>${fee}</p>
       </div>
 
       <hr />
 
       <div className={styles.sum}>
         <p>Total</p>
-        <p>${property.price_per_night * nights + 40}</p>
+        <p>${property.price_per_night * nights + fee}</p>
       </div>
     </aside>
     

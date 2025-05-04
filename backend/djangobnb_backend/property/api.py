@@ -1,10 +1,12 @@
 from django.http import JsonResponse
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.response import Response 
+from rest_framework import status
 
 from .forms import PropertyForm
 from .models import Property
-from .serializers import PropertiesListSerializer, PropertiesDetailSerializer
+from .serializers import PropertiesListSerializer, PropertiesDetailSerializer, ReservationSerializer
 
 @api_view(['GET'])
 @authentication_classes([]) # tells drf to ignore authentication, jwtなしのゲストとして使えるrouteということ。
@@ -43,3 +45,20 @@ def create_property(request):
   else:
     print('error', form.errors, form.non_field_errors)
     return JsonResponse({'errors': form.errors}, status=400)
+  
+@api_view(['POST'])
+def book_property(request, property_pk):
+  # find the property being reserved
+  try:
+    property = Property.objects.get(pk=property_pk)
+  except Property.DoesNotExist:
+    return Response({'error': 'Property not found'}, status=status.HTTP_404_NOT_FOUND)
+  
+  serializer = ReservationSerializer(data=request.data)
+  if serializer.is_valid():
+    serializer.save(property_obj=property, booked_by=request.user)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+  else:
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+  

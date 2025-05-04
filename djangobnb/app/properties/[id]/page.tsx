@@ -3,12 +3,13 @@ import Image from 'next/image';
 
 import ReservationSidebar from '@/app/components/properties/ReservationSidebar';
 import apiService from '@/app/services/apiService';
-import { parseAppSegmentConfig } from 'next/dist/build/segment-config/app/app-segment-config';
+import { getUserId } from '@/app/lib/actions';
 
 export default async function PropertyDetailPage({ params }: {params: {id: string}}) {
   const { id } = await params
   const property = await apiService.get(`/api/properties/${id}`)
   const landlord = property.landlord
+  const userId = await getUserId()
   return (
     <main className={styles.main}>
       <div className={styles.imageContainer}>
@@ -53,6 +54,7 @@ export default async function PropertyDetailPage({ params }: {params: {id: strin
 
         <ReservationSidebar 
           property={property}
+          userId={userId}
         />
         
       </div>
