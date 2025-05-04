@@ -15,3 +15,11 @@
   background-color: var(--airbnbDark);
   transition: background-color 0.2s ease-in-out;
 }
+
+/* Calender */
+.daterange {
+  width: 100%;
+  border: 1px solid lightgray;
+  border-radius: 7px;
+  margin-bottom: 1rem;
+}

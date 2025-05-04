@@ -3,13 +3,16 @@
 import styles from './properties.module.css';
 
 import { useState, useEffect } from 'react';
-import { DateRangePicker } from 'react-date-range';
+import { Range, RangeKeyDict } from 'react-date-range';
 import {differenceInDays, eachDayOfInterval } from 'date-fns';
 
 import apiService from '@/app/services/apiService';
 import useLoginModal from '@/app/hooks/useLoginModal';
+import useTransactionFee from '@/app/hooks/useTransactionFee';
+import PropertyList from './PropertyList';
+import DatePicker from '@/app/components/forms/DatePicker';
 
-const initialDateRange = {
+const initialDateRange: Range = {
   startDate: new Date(),
   endDate: new Date(),
   key: 'selection',
@@ -40,8 +43,10 @@ interface ReservationSidebarProps {
 
 
 
-export default function ReservationSidebar({ property }: ReservationSidebarProps) {
+export default function ReservationSidebar({ property, userId }: ReservationSidebarProps) {
   const LoginModal = useLoginModal();
+  const fetchFees = useTransactionFee((state) => state.fetchFees);
+  const transactionFee = useTransactionFee((state) => state.transactionFee);
 
   const [ fee, setFee ] = useState<number>(0);
   const [ nights, setNights ] = useState<number>(1);
@@ -50,20 +55,66 @@ export default function ReservationSidebar({ property }: ReservationSidebarProps
   const [ minDate, setMinDate ] = useState<Date>(new Date());
   const [ guests, setGuests ] = useState<number>(1);
   const guestsRange = Array.from({length: property.guests}, (_, i) => (i + 1))
+
+  // get fees
+  useEffect(() => {
+    async function fetchTransactionFee() {
+      try {
+        await fetchFees();
+      }
+      catch (error) {
+        console.error('Error fetching transaction fee:', error);
+      }
+    }
+    fetchTransactionFee();
+  }, []);
+
   // effect
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
       const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
 
       if (dayCount && property.price_per_night) {
-        const _fee = dayCount * property.price_per_night;
-      }
+        const _feeAmount = (dayCount * property.price_per_night) * (transactionFee / 100);
+        console.log(_feeAmount)
+
+        setFee(_feeAmount);
+        setNights(dayCount);
+        setTotalPrice((dayCount * property.price_per_night) + _feeAmount);
+      } else {
+        setNights(1);
+        setFee(property.price_per_night * (transactionFee / 100));
+        setTotalPrice(property.price_per_night);
+      } 
     }
-  }, [dateRange])
+  }, [dateRange, transactionFee])
+
+  function handleDateChange(state: RangeKeyDict) {
+    const selection = state.selection
+    console.log(selection)
+    const newStartDate = new Date(selection.startDate || new Date());
+    const newEndDate = new Date(selection.endDate || new Date());
+
+    if (newEndDate <= newStartDate) {
+      newEndDate.setDate(newStartDate.getDate() +1)
+    }
+    setDateRange({
+      ...dateRange,
+      startDate: newStartDate,
+      endDate: newEndDate
+    })
+  }
+  
 
   return (
     <aside className={styles.resAside}>
       <h2 className={styles.price}>${property.price_per_night} per night</h2>
+
+      <DatePicker 
+        value={dateRange}
+        onChange={handleDateChange}
+        bookedDates={[new Date()]}
+      />
 
       <div className={styles.calenderContainer}>
         <label className={styles.label}>Guests</label>
@@ -98,7 +149,7 @@ export default function ReservationSidebar({ property }: ReservationSidebarProps
 
       <div className={styles.sum}>
         <p>Total</p>
-        <p>${property.price_per_night * nights + fee}</p>
+        <p>${totalPrice}</p>
       </div>
     </aside>
     

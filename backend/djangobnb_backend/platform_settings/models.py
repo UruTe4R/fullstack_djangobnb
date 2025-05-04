@@ -5,3 +5,6 @@ from django.db import models
 class Fees(models.Model):
   name = models.CharField(max_length=255)
   value = models.IntegerField()
+
+  def __str__(self):
+    return f"{self.name} - {self.value}%"
