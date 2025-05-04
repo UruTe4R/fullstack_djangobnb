@@ -6,7 +6,7 @@ from rest_framework import status
 
 from .forms import PropertyForm
 from .models import Property
-from .serializers import PropertiesListSerializer, PropertiesDetailSerializer, ReservationSerializer
+from .serializers import PropertiesListSerializer, PropertiesDetailSerializer, ReservationSerializer, ReservationListSerializer
 
 @api_view(['GET'])
 @authentication_classes([]) # tells drf to ignore authentication, jwtなしのゲストとして使えるrouteということ。
@@ -63,4 +63,14 @@ def book_property(request, property_pk):
   else:
     return Response({"success": False, "error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-  
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def property_reservations(request, property_pk):
+  # find the property and get all of its reservations
+  property = Property.objects.get(pk=property_pk)
+  reservations = property.reservations.all()
+
+  serializer = ReservationListSerializer(reservations, many=True)
+
+  return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)

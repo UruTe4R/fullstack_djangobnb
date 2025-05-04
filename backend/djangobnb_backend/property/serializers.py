@@ -45,3 +45,18 @@ class ReservationSerializer(serializers.ModelSerializer):
 
   def get_total_price(self, obj):
     return obj.total_price
+
+class ReservationListSerializer(serializers.ModelSerializer):
+  # this will make possible to get property_obj serialzied
+  property_obj = PropertiesListSerializer(read_only=True, many=False)
+
+  class Meta:
+    model = Reservation
+    fields = [
+      'id',
+      'property_obj',
+      'checkin_date',
+      'checkout_date',
+      'total_price',
+      'number_of_nights',
+    ]

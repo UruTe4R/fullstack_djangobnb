@@ -53,6 +53,7 @@ export default function ReservationSidebar({ property, userId }: ReservationSide
   const [ totalPrice, setTotalPrice ] = useState<number>(0);
   const [ dateRange, setDateRange ] = useState(initialDateRange);
   const [ minDate, setMinDate ] = useState<Date>(new Date());
+  const [ bookedDates, setBookedDates ] = useState<Date[]>([]);
   const [ guests, setGuests ] = useState<number>(1);
   const guestsRange = Array.from({length: property.guests}, (_, i) => (i + 1))
 
@@ -66,7 +67,33 @@ export default function ReservationSidebar({ property, userId }: ReservationSide
         console.error('Error fetching transaction fee:', error);
       }
     }
+
+    async function getReservations() {
+      try {
+        const response = await apiService.get(`/api/properties/${property.id}/reservations/`)
+        
+        const reservations = response.data;
+
+        let dates: Date[] = [];
+
+        reservations.forEach((reservation: any) => {
+          const range = eachDayOfInterval({
+            start: new Date(reservation.checkin_date),
+            end: new Date(reservation.checkout_date)
+          });
+
+          dates = [...dates, ...range];
+        })
+
+        setBookedDates(dates)
+
+      }
+      catch (error) {
+        console.error('Error fetching reservations:', error);
+      }
+    }
     fetchTransactionFee();
+    getReservations()
   }, []);
 
   // calculate fees on date range chang effect
@@ -134,7 +161,7 @@ export default function ReservationSidebar({ property, userId }: ReservationSide
       <DatePicker 
         value={dateRange}
         onChange={handleDateChange}
-        bookedDates={[new Date()]}
+        bookedDates={bookedDates}
       />
 
       <div className={styles.calenderContainer}>
