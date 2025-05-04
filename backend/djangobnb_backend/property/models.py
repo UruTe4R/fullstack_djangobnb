@@ -5,6 +5,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from useraccount.models import User
+from platform_settings.models import Fees
 
 class Property(models.Model):
   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -25,6 +26,9 @@ class Property(models.Model):
   def image_url(self):
     return f'{settings.WEBSITE_URL}{self.image.url}'
   
+  def __str__(self):
+    return self.title
+  
 class Reservation(models.Model):
   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
   property_obj = models.ForeignKey(Property, related_name="reservations", on_delete=models.CASCADE) # Property.reservations.all() で反対側から参照可能
@@ -34,13 +38,17 @@ class Reservation(models.Model):
   booked_by = models.ForeignKey(User, related_name='reservations', on_delete=models.CASCADE)
   booked_at = models.DateTimeField(auto_now_add=True)
   
+  # 計算で導けるプロパティはメソッドにして@propertyをつける。
   @property
   def number_of_nights(self):
     return (self.checkout_date - self.checkin_date).days
   
   @property
   def total_price(self):
-    return self.property.price_per_night * self.number_of_nights
+    transaction_fee_percent = Fees.objects.get(name='djangobnb_transaction_fee').value
+    transaction_fee = self.property_obj.price_per_night * self.number_of_nights * transaction_fee_percent / 100
+
+    return (self.property_obj.price_per_night * self.number_of_nights + transaction_fee)
   
   # override full_clean() that is called whenever a model instance is saved
   def clean(self):

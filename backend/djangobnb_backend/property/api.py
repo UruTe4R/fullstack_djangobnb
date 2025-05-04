@@ -51,14 +51,16 @@ def book_property(request, property_pk):
   # find the property being reserved
   try:
     property = Property.objects.get(pk=property_pk)
+    print("property", property)
   except Property.DoesNotExist:
-    return Response({'error': 'Property not found'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({"success": False, 'error': 'Property not found'}, status=status.HTTP_404_NOT_FOUND)
   
+  print("request.data", request.data)
   serializer = ReservationSerializer(data=request.data)
   if serializer.is_valid():
     serializer.save(property_obj=property, booked_by=request.user)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response({'success': True, 'data': serializer.data}, status=status.HTTP_201_CREATED)
   else:
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"success": False, "error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
   

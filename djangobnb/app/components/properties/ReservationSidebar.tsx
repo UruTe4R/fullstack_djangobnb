@@ -4,7 +4,7 @@ import styles from './properties.module.css';
 
 import { useState, useEffect } from 'react';
 import { Range, RangeKeyDict } from 'react-date-range';
-import {differenceInDays, eachDayOfInterval } from 'date-fns';
+import {differenceInDays, eachDayOfInterval, format } from 'date-fns';
 
 import apiService from '@/app/services/apiService';
 import useLoginModal from '@/app/hooks/useLoginModal';
@@ -44,7 +44,7 @@ interface ReservationSidebarProps {
 
 
 export default function ReservationSidebar({ property, userId }: ReservationSidebarProps) {
-  const LoginModal = useLoginModal();
+  const openLogin = useLoginModal((state) => state.open);
   const fetchFees = useTransactionFee((state) => state.fetchFees);
   const transactionFee = useTransactionFee((state) => state.transactionFee);
 
@@ -56,7 +56,7 @@ export default function ReservationSidebar({ property, userId }: ReservationSide
   const [ guests, setGuests ] = useState<number>(1);
   const guestsRange = Array.from({length: property.guests}, (_, i) => (i + 1))
 
-  // get fees
+  // get fees effect
   useEffect(() => {
     async function fetchTransactionFee() {
       try {
@@ -69,7 +69,7 @@ export default function ReservationSidebar({ property, userId }: ReservationSide
     fetchTransactionFee();
   }, []);
 
-  // effect
+  // calculate fees on date range chang effect
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
       const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
@@ -104,6 +104,27 @@ export default function ReservationSidebar({ property, userId }: ReservationSide
       endDate: newEndDate
     })
   }
+
+  async function performbooking() {
+    if (!userId) {
+      openLogin()
+    }
+
+    const formData = new FormData();
+    formData.append('guests', guests.toString());
+    if (dateRange.startDate && dateRange.endDate) { 
+      formData.append('checkin_date', format(dateRange.startDate, 'yyyy-MM-dd'))
+      formData.append('checkout_date', format(dateRange.endDate, 'yyyy-MM-dd'))
+    }
+    
+    const response = await apiService.postWithCredentials(`/api/properties/${property.id}/book/`, formData);
+
+    if (response.success) {
+      console.log('Booking successed', response.data);
+    } else {
+      console.log('Booking failed', response.error);
+    }
+  }
   
 
   return (
@@ -133,7 +154,11 @@ export default function ReservationSidebar({ property, userId }: ReservationSide
         </select>
       </div>
 
-      <div className={styles.button}>Book</div>
+      <div 
+        className={styles.button}
+        onClick={performbooking}
+      >
+        Book</div>
 
       <div className={styles.total}>
         <p>${property.price_per_night} * {nights} nights</p>

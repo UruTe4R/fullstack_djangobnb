@@ -32,6 +32,16 @@ class PropertiesDetailSerializer(serializers.ModelSerializer):
     ]
 
 class ReservationSerializer(serializers.ModelSerializer):
+  number_of_nights = serializers.SerializerMethodField()
+  total_price = serializers.SerializerMethodField()
   class Meta:
     model = Reservation
-    fields = ['property_obj', 'checkin_date', 'checkout_date', 'guests', 'booked_by']
+    fields = '__all__'
+    # read_only_fieldsにするとフロントエンドからデータを貰わなくて済む。
+    read_only_fields = ['total_price', 'number_of_nights', 'booked_at', 'booked_by', 'property_obj']
+  
+  def get_number_of_nights(self, obj):
+    return obj.number_of_nights
+
+  def get_total_price(self, obj):
+    return obj.total_price
