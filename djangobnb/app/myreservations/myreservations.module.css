@@ -10,6 +10,7 @@
   font-size: 1.25rem;
 }
 
+
 .propertyContainer > * + * {
   margin-top: 1rem;
 }
@@ -36,17 +37,23 @@
   aspect-ratio: 1 /1;
   border-radius: 7px;
 }
-
+.image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
 .image:hover {
   transform: scale(1.1);
-  object-fit: cover;
   transition: transform 0.2s ease-in-out;
-  width: 100;
-  height: auto;
 }
 
 .reservationInfoContainer {
   grid-column: span 3;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
 
 }
 @media (max-width: 650px) {
@@ -61,7 +68,7 @@
 }
 .reservationInfo {
   margin-bottom: 1rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 .p {

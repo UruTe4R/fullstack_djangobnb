@@ -1,4 +1,4 @@
-import { getAccessToken } from '@/app/lib/actions';
+import { getAccessToken, getRefreshToken, handleLogin } from '@/app/lib/actions';
 
 const apiService = {
   get: async function (url: string): Promise<any> {
@@ -24,6 +24,36 @@ const apiService = {
       console.error("Error:", error);
       throw error;
     });
+  },
+
+  getWithCredentials: async function (url: string): Promise<any> {
+    console.log('getWithCredentials', url);
+
+    const accessToken = await getAccessToken();
+    console.log('accessToken', accessToken);
+
+    return fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    }
+    )
+    .then(json => {
+      console.log('Response:', json);
+      return json;
+    })
+    .catch(error => {
+      console.log("Error:", error);
+      throw error;
+    })
   },
 
   post: async function (url: string, data: any): Promise<any> {
@@ -78,6 +108,9 @@ const apiService = {
     })
   },
 
+
 }
 
 export default apiService;
+
+

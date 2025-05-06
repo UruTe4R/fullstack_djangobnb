@@ -2,12 +2,14 @@ import styles from './properties.module.css';
 import Image from 'next/image';
 
 import { PropertyType } from "./PropertyList";
+import LikeButton from '@/app/components/LikeButton';
 
 interface PropertyProps {
-  property: PropertyType
+  property: PropertyType;
+  like?: (is_liked: boolean) => void;
 }
 
-export default function PropertyListItem({ property }: PropertyProps) {
+export default function PropertyListItem({ property, like }: PropertyProps) {
   return (
     <div className={styles.propertyList}>
       <div className={styles.item}>
@@ -17,6 +19,14 @@ export default function PropertyListItem({ property }: PropertyProps) {
           src={property.image_url}
           alt="image of beach house"
           className={styles.image}/>
+          
+        {like && (
+          <LikeButton 
+          property_id={property.id}
+          is_liked={property.is_liked}
+          like={like}
+          />
+        )}
       </div>
 
       <div className={styles.mt_2}>

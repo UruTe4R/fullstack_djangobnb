@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import styles from '@/app/components/navbar/navbar.module.css';
+import Link from 'next/link';
 
 import MenuLink from '@/app/components/navbar/MenuLink';
 import useLoginModal from '@/app/hooks/useLoginModal';
@@ -41,6 +42,10 @@ export default function UserNav({ userId }: UserNavProps) {
     openSignup()
     setIsOpenUserMenu(false);
   }
+
+  function handleClickMyProperties() {
+    setIsOpenUserMenu(false);
+  }
   return (
     <div ref={userMenuRef} className={styles.usermenu}>
       <button 
@@ -67,7 +72,29 @@ export default function UserNav({ userId }: UserNavProps) {
           }}
         >
           {userId ? (
+            <>
+            <Link
+              href="/myproperties"
+              onClick={handleClickMyProperties}
+            >
+              <MenuLink 
+                label="My properties"
+                
+                />
+            </Link>
+
+            <Link
+              href="/myreservations"
+              onClick={() => setIsOpenUserMenu(false)}
+            >
+              <MenuLink 
+                label="My reservations"
+                
+                />
+            </Link>
+
             <LogoutButton />
+            </>
           ): (
             <>
               <MenuLink 

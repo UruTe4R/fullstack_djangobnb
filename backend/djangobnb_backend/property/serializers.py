@@ -3,6 +3,7 @@ from .models import Property, Reservation
 from useraccount.serializers import UserDetailSerializer
 
 class PropertiesListSerializer(serializers.ModelSerializer):
+  is_liked = serializers.SerializerMethodField()
   class Meta:
     model = Property
     fields = [
@@ -10,10 +11,18 @@ class PropertiesListSerializer(serializers.ModelSerializer):
       'title',
       'price_per_night',
       'image_url',
+      'is_liked'
     ]
+  def get_is_liked(self, obj):
+    user = self.context.get('request').user
+    if user.is_authenticated:
+      return obj.liked_by.filter(pk=user.pk).exists()
+    return False
+
 
 class PropertiesDetailSerializer(serializers.ModelSerializer):
   landlord = UserDetailSerializer(read_only=True, many=False)
+  is_liked = serializers.SerializerMethodField()
   class Meta:
     model = Property
     fields = [
@@ -29,7 +38,27 @@ class PropertiesDetailSerializer(serializers.ModelSerializer):
       'country_code',
       'category',
       'image_url',
+      'is_liked',
     ]
+
+  def get_is_liked(self, obj):
+    request = self.context.get('request')
+    if request is None:
+      return False
+    user = request.user
+    if user.is_authenticated:
+      return obj.liked_by.filter(pk=user.pk).exists()
+    return False
+
+  def get_is_liked(self, obj):
+    request = self.context.get('request')
+    if request is None:
+      return False
+    user = request.user
+    if user.is_authenticated:
+      return obj.liked_by.filter(pk=user.pk).exists()
+    return False
+
 
 class ReservationSerializer(serializers.ModelSerializer):
   number_of_nights = serializers.SerializerMethodField()

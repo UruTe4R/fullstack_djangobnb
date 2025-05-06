@@ -1,7 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { ValueContainer } from 'react-select/animated';
+import apiService from '@/app/services/apiService';
 
 export async function handleLogin(userId: string, accessToken: string, refreshToken: string) {
   const cookieStore = await cookies()
@@ -45,8 +45,64 @@ export async function getUserId() {
 
 export async function getAccessToken() {
   const cookieStore = await cookies()
-  const accessToken = cookieStore.get('session_access_token')?.value;
+  let accessToken = cookieStore.get('session_access_token')?.value;
+  if (!accessToken) {
+    console.log("access token expired, trying to refresh");
+    accessToken = await handleFetchAccessTokenWithRefreshToken();
+  }
+  
+  
 
   return accessToken ? accessToken : null
 }
 
+export async function getRefreshToken() {
+  const cookieStore = await cookies()
+
+  const refreshToken = cookieStore.get('session_refresh_token')?.value;
+
+  if (!refreshToken) {
+    // if refresh token is not found, let user log out by resetting auth cookie
+    resetAuthCookie();
+    console.log('logged out by reseting auth cookie')
+  }
+
+  return refreshToken ? refreshToken : null
+}
+
+
+async function handleFetchAccessTokenWithRefreshToken() {
+  console.log('handleFetchAccessTokenWithRefreshToken');
+  const refreshToken = await getRefreshToken();
+  if (!refreshToken) {
+    return null;
+  }
+
+  try {
+    console.log('refreshing token');
+    const refreshResponse = await apiService.post('/api/auth/token/refresh/', {
+      refresh: refreshToken
+    });
+
+    const accessToken = refreshResponse.access;
+    const userId = await getUserId();
+    if (!userId) {
+      console.log('user id not found');
+      return null;
+    }
+
+    const cookieStore = await cookies()
+    cookieStore.set('session_access_token', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60, // 1 hour
+      path: '/'
+    })
+
+    return accessToken;
+
+  } catch (error) {
+    console.log("Token refresh failed:", error);
+    return null;
+  }
+}

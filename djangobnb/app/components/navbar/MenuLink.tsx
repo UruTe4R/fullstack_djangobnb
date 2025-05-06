@@ -4,7 +4,7 @@ import styles from '@/app/components/navbar/navbar.module.css';
 
 interface MenuLinkProps {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function MenuLink({ label, onClick }: MenuLinkProps) {

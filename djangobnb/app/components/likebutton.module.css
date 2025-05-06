@@ -1,0 +1,22 @@
+.button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+}
+.liked {
+  color: var(--airbnb);
+}
+.notLiked {
+  color: white;
+}
+.liked:hover {
+  color: white;
+}
+.notLiked:hover {
+  color: var(--airbnb);
+}
+
+.icon{
+  width: 1.5rem;
+}
