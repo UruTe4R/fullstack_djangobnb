@@ -2,6 +2,7 @@
 
 import styles from './modal.module.css'
 import { useRouter } from 'next/navigation';
+import { startTransition } from 'react';
 
 import Modal from './Modal';
 import useLoginModal from '@/app/hooks/useLoginModal';
@@ -10,11 +11,14 @@ import apiService from '@/app/services/apiService';
 import { handleLogin } from '@/app/lib/actions';
 import { useImmer } from 'use-immer';
 import { useState } from 'react';
+import useAuthStore from '@/app/hooks/useAuthStore';
 
 
 export default function LoginModal() {
   const isOpen = useLoginModal((state) => state.isOpen);
   const close = useLoginModal((state) => state.close);
+
+  const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
 
   const router = useRouter();
   const [formData, setFormData] = useImmer({email: '', password: ''});
@@ -33,9 +37,15 @@ export default function LoginModal() {
     if (response.access) {
       await handleLogin(response.user.pk, response.access, response.refresh);
 
+      
+      setLoggedIn(true);
+
       close();
 
-      router.push('/');
+      startTransition(() => {
+        router.push('/');
+        router.refresh();
+      })
     } else {
       setErrors(response.non_field_errors);
     }

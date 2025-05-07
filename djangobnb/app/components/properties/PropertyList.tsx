@@ -7,7 +7,7 @@ import apiService from "@/app/services/apiService";
 
 import PropertyListItem from "@/app/components/properties/PropertyListItem";
 import Link from 'next/link';
-import { getUserId } from '@/app/lib/actions';
+import useAuthStore from "@/app/hooks/useAuthStore";
 
 export type PropertyType = {
   id: string; 
@@ -19,10 +19,13 @@ export type PropertyType = {
 
 interface PropertyListProps {
   landlord_id?: string | null;
+  userId: string | null;
 }
 
-export default function PropertyList({ landlord_id }: PropertyListProps) {
+export default function PropertyList({ landlord_id, userId }: PropertyListProps) {
   const [ properties, setProperties ] = useState<PropertyType[]>([]);
+
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   function like(id: string, is_liked: boolean) {
     const tmpProperties = properties.map((property) => {
@@ -45,7 +48,6 @@ export default function PropertyList({ landlord_id }: PropertyListProps) {
 
   useEffect(() => {
     async function getProperties() {
-      const userId = await getUserId();
 
       let url = '/api/properties';
       if (landlord_id) {
@@ -62,7 +64,7 @@ export default function PropertyList({ landlord_id }: PropertyListProps) {
     }
 
     getProperties();
-  }, []);
+  }, [isLoggedIn, userId]);
   return (
     <>
       {properties.map((property) => {

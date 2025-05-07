@@ -2,6 +2,7 @@
 
 import { cookies } from 'next/headers';
 import apiService from '@/app/services/apiService';
+import useAuthStore from '../hooks/useAuthStore';
 
 export async function handleLogin(userId: string, accessToken: string, refreshToken: string) {
   const cookieStore = await cookies()
@@ -26,6 +27,7 @@ export async function handleLogin(userId: string, accessToken: string, refreshTo
     maxAge: 60 * 60 * 24* 7, // 1 week
     path: '/'
   })
+
 }
 
 export async function resetAuthCookie() {
