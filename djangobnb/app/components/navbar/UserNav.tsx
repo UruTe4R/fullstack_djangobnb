@@ -73,27 +73,47 @@ export default function UserNav({ userId }: UserNavProps) {
         >
           {userId ? (
             <>
-            <Link
-              href="/myproperties"
-              onClick={handleClickMyProperties}
-            >
-              <MenuLink 
-                label="My properties"
-                
-                />
-            </Link>
+              <Link
+                href="/inbox"
+                onClick={() => setIsOpenUserMenu(false)}
+              >
+                <MenuLink 
+                  label="Inbox"
+                  
+                  />
+              </Link>
+              
+              <Link
+                href="/myproperties"
+                onClick={handleClickMyProperties}
+              >
+                <MenuLink 
+                  label="My properties"
+                  
+                  />
+              </Link>
 
-            <Link
-              href="/myreservations"
-              onClick={() => setIsOpenUserMenu(false)}
-            >
-              <MenuLink 
-                label="My reservations"
-                
-                />
-            </Link>
+              <Link
+                href="/liked_properties"
+                onClick={() => setIsOpenUserMenu(false)}
+              >
+                <MenuLink 
+                  label="Liked properties"
+                  
+                  />
+              </Link>
 
-            <LogoutButton />
+              <Link
+                href="/myreservations"
+                onClick={() => setIsOpenUserMenu(false)}
+              >
+                <MenuLink 
+                  label="My reservations"
+                  
+                  />
+              </Link>
+
+              <LogoutButton />
             </>
           ): (
             <>

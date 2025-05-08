@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './modal.module.css'
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { startTransition } from 'react';
 
 import Modal from './Modal';
@@ -21,6 +21,9 @@ export default function LoginModal() {
   const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
 
   const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+
   const [formData, setFormData] = useImmer({email: '', password: ''});
   const [errors, setErrors] = useState<string[]>([]);
 
@@ -36,14 +39,16 @@ export default function LoginModal() {
 
     if (response.access) {
       await handleLogin(response.user.pk, response.access, response.refresh);
-
-      
       setLoggedIn(true);
+      setFormData({email: '', password: ''});
+      setErrors([]);
 
       close();
-
+      
+      const query = searchParams.toString();
+      const fullPath = pathName + (query ? ('?' + query) : '');
       startTransition(() => {
-        router.push('/');
+        router.replace(fullPath);
         router.refresh();
       })
     } else {

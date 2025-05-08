@@ -1,5 +1,3 @@
-'use client';
-
 import styles from './likebutton.module.css';
 
 import apiService from '@/app/services/apiService';
@@ -24,7 +22,9 @@ export default function LikeButton({property_id, is_liked, like}: LikeButtonProp
     } else {
       console.log('Like failed', response.error);
     }
+
   }
+
   return (
     <div
       onClick={(e) => toggleLike(e)}

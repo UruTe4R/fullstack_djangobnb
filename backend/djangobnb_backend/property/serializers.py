@@ -14,7 +14,10 @@ class PropertiesListSerializer(serializers.ModelSerializer):
       'is_liked'
     ]
   def get_is_liked(self, obj):
-    user = self.context.get('request').user
+    request = self.context.get('request')
+    if request is None:
+      return False
+    user = request.user
     if user.is_authenticated:
       return obj.liked_by.filter(pk=user.pk).exists()
     return False
@@ -50,14 +53,6 @@ class PropertiesDetailSerializer(serializers.ModelSerializer):
       return obj.liked_by.filter(pk=user.pk).exists()
     return False
 
-  def get_is_liked(self, obj):
-    request = self.context.get('request')
-    if request is None:
-      return False
-    user = request.user
-    if user.is_authenticated:
-      return obj.liked_by.filter(pk=user.pk).exists()
-    return False
 
 
 class ReservationSerializer(serializers.ModelSerializer):

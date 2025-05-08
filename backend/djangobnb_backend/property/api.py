@@ -16,10 +16,14 @@ from .serializers import PropertiesListSerializer, PropertiesDetailSerializer, R
 def properties_list(request):
   properties = Property.objects.all()
   landlord_id = request.query_params.get('landlord_id')
+  liked = request.query_params.get('liked')
 
   if landlord_id:
     print('landlord_id', landlord_id)
     properties = Property.objects.filter(landlord_id=landlord_id)
+  if liked:
+    print('liked', liked)
+    properties = Property.objects.filter(liked_by=request.user)
   serializer = PropertiesListSerializer(properties, many=True, context={'request': request})
 
   return Response({"data": serializer.data}, status=status.HTTP_200_OK)

@@ -10,6 +10,7 @@ interface PropertyProps {
 }
 
 export default function PropertyListItem({ property, like }: PropertyProps) {
+  
   return (
     <div className={styles.propertyList}>
       <div className={styles.item}>
@@ -22,9 +23,9 @@ export default function PropertyListItem({ property, like }: PropertyProps) {
           
         {like && (
           <LikeButton 
-          property_id={property.id}
-          is_liked={property.is_liked}
-          like={like}
+            property_id={property.id}
+            is_liked={property.is_liked}
+            like={like}
           />
         )}
       </div>

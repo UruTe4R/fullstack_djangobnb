@@ -18,16 +18,24 @@ export type PropertyType = {
 }
 
 interface PropertyListProps {
-  landlord_id?: string | null;
   userId: string | null;
+  landlord_id?: string | null;
+  liked?: boolean;
 }
 
-export default function PropertyList({ landlord_id, userId }: PropertyListProps) {
+export default function PropertyList({ landlord_id, userId, liked }: PropertyListProps) {
   const [ properties, setProperties ] = useState<PropertyType[]>([]);
 
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  function like(id: string, is_liked: boolean) {
+  function handleClickLike(id: string, is_liked: boolean) {
+    // if it is liked_properties page and unliking a property
+    if (liked && !is_liked) {
+      setProperties(prev => prev.filter(property => property.id !== id));
+      return;
+    } 
+    
+    //change property(id=id).is_liked to is_liked
     const tmpProperties = properties.map((property) => {
       if (property.id === id) {
 
@@ -50,9 +58,14 @@ export default function PropertyList({ landlord_id, userId }: PropertyListProps)
     async function getProperties() {
 
       let url = '/api/properties';
+      // visiting /myproperties or /landlords/
       if (landlord_id) {
         url += `?landlord_id=${landlord_id}`
+      // visiting /liked_properties  
+      } else if (liked) {
+        url += `?liked=${liked}`
       }
+
       let response;
       if (userId) {
         response = await apiService.getWithCredentials(url);
@@ -65,6 +78,7 @@ export default function PropertyList({ landlord_id, userId }: PropertyListProps)
 
     getProperties();
   }, [isLoggedIn, userId]);
+
   return (
     <>
       {properties.map((property) => {
@@ -73,7 +87,7 @@ export default function PropertyList({ landlord_id, userId }: PropertyListProps)
             <PropertyListItem 
               key={property.id}
               property={property}
-              like={(is_liked: boolean) => like(property.id, is_liked) }
+              like={(is_liked: boolean) => handleClickLike(property.id, is_liked) }
             />
           </Link>
         )
