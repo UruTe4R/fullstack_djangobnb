@@ -79,7 +79,7 @@ const apiService = {
     })
   },
 
-  postWithCredentials: async function (url: string, data: any): Promise<any> {
+  postWithCredentials: async function (url: string, data: any = null): Promise<any> {
     console.log('postWithCredentials', url);
 
     const accessToken = await getAccessToken();
@@ -87,25 +87,24 @@ const apiService = {
 
     const isFormData = data instanceof FormData;
 
-    return fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
+    const requestConfig: RequestInit = {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        ...(isFormData ? {} : {'Content-Type': 'application/json'}),
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
         'Authorization': `Bearer ${accessToken}`,
       },
-      body: data,
-    })
-    .then(response => {
-      return response.json()
-    })
-    .then(json => {
-      return json;
-    })
-    .catch(error => {
-      console.log("Error:", error.errors);
-      throw error;
-    })
+      // Only set the body if data exists
+      body: data ? (isFormData ? data : JSON.stringify(data)) : undefined,
+    };
+
+    return fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, requestConfig)
+      .then(response => response.json())
+      .then(json => json)
+      .catch(error => {
+        console.log("Error:", error);
+        throw error;
+      });
   },
 
 

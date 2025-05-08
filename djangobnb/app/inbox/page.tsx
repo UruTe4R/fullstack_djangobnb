@@ -15,6 +15,7 @@ export type UserType = {
 export type ConversationType = {
   id: string;
   users: UserType[];
+  updated_at: string;
 }
 
 export default async function InboxPage() {

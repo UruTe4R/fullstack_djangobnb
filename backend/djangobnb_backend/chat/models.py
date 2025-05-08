@@ -4,12 +4,15 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 from useraccount.models import User
+from property.models import Property
 
 class Conversation(models.Model):
   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
   users = models.ManyToManyField(User, related_name='conversations')
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
+  property = models.ForeignKey(Property, null=True, blank=True, related_name='conversations', on_delete=models.CASCADE)
+
 
 
 class Message(models.Model):

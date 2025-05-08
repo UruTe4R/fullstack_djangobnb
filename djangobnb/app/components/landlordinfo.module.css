@@ -1,0 +1,26 @@
+.landlordContainer {
+  padding: 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+
+}
+  .landlordContainerLeft {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+  }
+
+  .profileImage {
+    border-radius: 50px;
+  }
+  .description {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+  }
+
+  .contactButton {
+    width: 25%;
+    max-width: 150px;
+  }

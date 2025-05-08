@@ -34,7 +34,7 @@
   padding-right: 1rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 975px) {
   .infosGrid {
     grid-template-columns: repeat(5, 1fr);
   }
@@ -57,20 +57,5 @@
   color: gray;
 }
 
-.landlordContainer {
-  padding: 0.75rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-}
-
-  .profileImage {
-    border-radius: 50px;
-  }
-  .description {
-    margin-top: 0.75rem;
-    font-size: 1rem;
-  }
 
   

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import ReservationSidebar from '@/app/components/properties/ReservationSidebar';
 import apiService from '@/app/services/apiService';
 import { getUserId } from '@/app/lib/actions';
+import LandlordInfo from '@/app/components/LandLordInfo';
+
 
 export default async function PropertyDetailPage({ params }: {params: {id: string}}) {
   const { id } = await params
@@ -27,29 +29,11 @@ export default async function PropertyDetailPage({ params }: {params: {id: strin
           <h1 className={styles.title}>{property.title}</h1>
           <span className={styles.guests}>{property.guests} guests - {property.guests} bedrooms - {property.bathrooms} bathroom</span>
           <hr />
-          <Link
-            href={`/landlords/${property.landlord.id}`}
-            className={styles.landlordContainer}
-          >
-            {landlord.avatar_url ? (
-              <Image 
-              src={landlord.avatar_url}
-              alt="Profile Picture"
-              width={50}
-              height={50}
-              className={styles.profileImage}/>
-            ) : (
-              <Image 
-              src="/images/profile_pic_1.jpg"
-              alt="Profile Picture"
-              width={50}
-              height={50}
-              className={styles.profileImage}/>
-            )}
-            
-            
-            <p><strong>{landlord.name ?? 'anonymous'}</strong> is your host</p>
-          </Link>
+
+          <LandlordInfo
+            landlord={landlord}
+            property={property}
+          />
 
           <hr />
 
