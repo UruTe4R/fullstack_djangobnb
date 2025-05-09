@@ -12,6 +12,7 @@ export default async function MyPropertiesPage() {
       <div className={styles.propertylistContainer}>
         <PropertyList 
           landlord_id={userId}
+          userId={userId}
         />
       </div>
     </main>

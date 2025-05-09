@@ -84,16 +84,6 @@ export default function UserNav({ userId }: UserNavProps) {
               </Link>
               
               <Link
-                href="/myproperties"
-                onClick={handleClickMyProperties}
-              >
-                <MenuLink 
-                  label="My properties"
-                  
-                  />
-              </Link>
-
-              <Link
                 href="/liked_properties"
                 onClick={() => setIsOpenUserMenu(false)}
               >
@@ -103,6 +93,18 @@ export default function UserNav({ userId }: UserNavProps) {
                   />
               </Link>
 
+              
+              <Link
+                href="/myproperties"
+                onClick={handleClickMyProperties}
+              >
+                <MenuLink 
+                  label="My properties"
+                  
+                  />
+              </Link>
+
+              
               <Link
                 href="/myreservations"
                 onClick={() => setIsOpenUserMenu(false)}

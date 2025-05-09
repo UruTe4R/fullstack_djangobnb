@@ -1,7 +1,7 @@
 services:
   web:
     build: ./djangobnb_backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000 & celery -A djangobnb_backend worker --loglevel=info"
     volumes:
       - ./djangobnb_backend/:/usr/src/djangobnb_backend/
     user: "${UID}:${GID}"
@@ -11,6 +11,7 @@ services:
       - ./.env
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:15
@@ -20,6 +21,11 @@ services:
       - POSTGRES_USER=postgresuser
       - POSTGRES_PASSWORD=postgrespassword
       - POSTGRES_DB=djangobnb
+  
+  redis:
+    image: redis:8.0.0-alpine
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres_data:

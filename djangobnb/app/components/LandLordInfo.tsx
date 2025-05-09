@@ -11,7 +11,7 @@ import { PropertyType } from '@/app/components/properties/PropertyList';
 import ContactButton from '@/app/components/ContactButton';
 
 type landlordType = {
-  id: number;
+  id: string;
   name: string;
   avatar_url: string;
 }
@@ -19,9 +19,10 @@ type landlordType = {
 interface LandlordInfoProps {
   landlord: landlordType;
   property: PropertyType;
+  userId: string | null;
 }
 
-export default function LandlordInfo({ landlord, property }: LandlordInfoProps) {
+export default function LandlordInfo({ landlord, property, userId }: LandlordInfoProps) {
   const router = useRouter();
   async function handleClick() {
     console.log('contact button clicked');
@@ -58,10 +59,7 @@ export default function LandlordInfo({ landlord, property }: LandlordInfoProps) 
         </Link>
         <p>is your host</p>
       </div>
-
-      <ContactButton 
-        onClick={handleClick}
-      />
+      {userId !== landlord.id && <ContactButton onClick={handleClick}/>}
     </div>
   );
 }

@@ -49,6 +49,8 @@ class Reservation(models.Model):
   guests = models.IntegerField(default=1)
   booked_by = models.ForeignKey(User, related_name='reservations', on_delete=models.CASCADE)
   booked_at = models.DateTimeField(auto_now_add=True)
+
+  is_active = models.BooleanField(default=True)
   
   # 計算で導けるプロパティはメソッドにして@propertyをつける。
   @property

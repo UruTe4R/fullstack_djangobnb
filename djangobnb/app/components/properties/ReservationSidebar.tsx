@@ -5,6 +5,7 @@ import styles from './properties.module.css';
 import { useState, useEffect } from 'react';
 import { Range, RangeKeyDict } from 'react-date-range';
 import {differenceInDays, eachDayOfInterval, format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 import apiService from '@/app/services/apiService';
 import useLoginModal from '@/app/hooks/useLoginModal';
@@ -44,6 +45,8 @@ interface ReservationSidebarProps {
 
 
 export default function ReservationSidebar({ property, userId }: ReservationSidebarProps) {
+  const router = useRouter();
+
   const openLogin = useLoginModal((state) => state.open);
   const fetchFees = useTransactionFee((state) => state.fetchFees);
   const transactionFee = useTransactionFee((state) => state.transactionFee);
@@ -148,6 +151,7 @@ export default function ReservationSidebar({ property, userId }: ReservationSide
 
     if (response.success) {
       console.log('Booking successed', response.data);
+      router.push('/myreservations')
     } else {
       console.log('Booking failed', response.error);
     }

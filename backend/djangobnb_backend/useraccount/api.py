@@ -20,7 +20,7 @@ def landlord_detail(request, landlord_pk):
 
 @api_view(['GET'])
 def reservations_list(request):
-  reservations = request.user.reservations.all()
+  reservations = request.user.reservations.all().order_by('-booked_at')
   serializer = ReservationListSerializer(reservations, many=True)
 
   return Response(serializer.data, status=status.HTTP_200_OK)

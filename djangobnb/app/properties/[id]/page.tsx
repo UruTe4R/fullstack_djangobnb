@@ -33,6 +33,7 @@ export default async function PropertyDetailPage({ params }: {params: {id: strin
           <LandlordInfo
             landlord={landlord}
             property={property}
+            userId={userId}
           />
 
           <hr />

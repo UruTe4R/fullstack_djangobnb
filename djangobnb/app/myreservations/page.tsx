@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 
 export default async function MyReservationsPage() {
-  const reservations = await apiService.getWithCredentials('/api/auth/myreservations/')
+  const reservations = await apiService.getWithCredentials('/api/auth/myreservations/');
   return (
     <main className={styles.main}>
         <h1 className={styles.h1}>My reservations</h1>
