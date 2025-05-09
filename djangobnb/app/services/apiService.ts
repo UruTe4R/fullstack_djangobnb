@@ -32,6 +32,10 @@ const apiService = {
     const accessToken = await getAccessToken();
     console.log('accessToken', accessToken);
 
+    if (accessToken === null) {
+      return null;
+    }
+
     return fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
       method: 'GET',
       headers: {
@@ -84,6 +88,9 @@ const apiService = {
 
     const accessToken = await getAccessToken();
     console.log('accessToken', accessToken);
+    if (accessToken === null) {
+      return null;
+    }
 
     const isFormData = data instanceof FormData;
 

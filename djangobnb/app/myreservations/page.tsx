@@ -3,10 +3,18 @@ import Image from 'next/image';
 
 import apiService from '@/app/services/apiService';
 import Link from 'next/link';
+import UnAuthorized from '../auth/UnAuthorized';
 
 
 export default async function MyReservationsPage() {
+
   const reservations = await apiService.getWithCredentials('/api/auth/myreservations/');
+
+  if (reservations === null) {
+    return (
+      <UnAuthorized />
+    )
+  }
   return (
     <main className={styles.main}>
         <h1 className={styles.h1}>My reservations</h1>
