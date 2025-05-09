@@ -15,8 +15,6 @@ from .tasks import test_celery
 # @authentication_classes([]) # tells drf to ignore authentication, jwtなしのゲストとして使えるrouteということ。
 @permission_classes([AllowAny]) # tells drf to ignore permission
 def properties_list(request):
-  print('test_celery')
-  test_celery.delay()
   properties = Property.objects.all()
   landlord_id = request.query_params.get('landlord_id')
   liked = request.query_params.get('liked')

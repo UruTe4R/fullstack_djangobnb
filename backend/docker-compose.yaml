@@ -1,7 +1,7 @@
 services:
   web:
     build: ./djangobnb_backend
-    command: python manage.py runserver 0.0.0.0:8000 & celery -A djangobnb_backend worker --loglevel=info"
+    command: python manage.py runserver 0.0.0.0:8000 & celery -A djangobnb_backend worker --loglevel=info & celery -A djangobnb_backend beat -l info
     volumes:
       - ./djangobnb_backend/:/usr/src/djangobnb_backend/
     user: "${UID}:${GID}"

@@ -118,6 +118,9 @@ INSTALLED_APPS = [
     'property',
     'platform_settings',
     'chat',
+
+    # celery
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
