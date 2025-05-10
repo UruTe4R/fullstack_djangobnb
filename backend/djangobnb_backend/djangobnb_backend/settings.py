@@ -90,6 +90,9 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 # Application definition
 
 INSTALLED_APPS = [
+    # for live-chat ASGI(asynchronous server gateway interface) creates websocket
+    'daphne',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -120,7 +123,12 @@ INSTALLED_APPS = [
     'chat',
 
     # celery
-    'django_celery_beat'
+    'django_celery_beat',
+
+    # channels
+    'channels',
+
+    
 ]
 
 MIDDLEWARE = [
@@ -216,3 +224,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CELERY_BROKER_URL = 'redis://redis:6379/0'
+
+# ASGI SETTINGS
+
+ASGI_APPLICATION = "djangobnb_backend.asgi.application"
+
+# channels setting
+CHANNEL_LAYERS = {
+  'default': {
+    'BACKEND': "channels_redis.core.RedisChannelLayer"
+  }
+}
